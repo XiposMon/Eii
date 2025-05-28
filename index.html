@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <script>
-  if (sessionStorage.getItem("loggedIn") !== "yes") {
-    window.location.href = "login.html";
-  }
-  </script>
   <meta charset="UTF-8">
   <title>TOTO GACOR</title>
+  <script>
+    if (sessionStorage.getItem("loggedIn") !== "yes") {
+      window.location.href = "login.html";
+    }
+  </script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      background-image: url('Raiden-eii.jpg');
+      background-image: url('raiden-eii.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -62,11 +62,10 @@
 <body>
   <div class="container">
     <h1 class="lightning-title">TOTO GACOR</h1>
-    <h2 class="mt-4">Masukan sini mas</h2>
-    <label for="fileInput" class="form-label"> braderku:</label>
+    <h2 class="mt-4">Upload File POS.NET</h2>
+    <label for="fileInput" class="form-label">Upload Filenya braderku:</label>
     <input type="file" id="fileInput" class="form-control" accept=".jncukMyID" multiple>
     <button id="processFile" class="btn btn-warning mt-3">Proses Data</button>
-
     <div class="table-responsive mt-4">
       <h2 class="text-white">Hasil Rekapitulasi:</h2>
       <table class="table mt-3">
@@ -87,9 +86,16 @@
         <tfoot id="tableFooter"></tfoot>
       </table>
     </div>
+
+    <button onclick="logout()" class="btn btn-danger mt-4">Logout</button>
   </div>
 
   <script>
+    function logout() {
+      sessionStorage.removeItem("loggedIn");
+      window.location.href = "login.html";
+    }
+
     const rupiah = n => "Rp " + n.toLocaleString("id-ID");
 
     document.getElementById("fileInput").addEventListener("change", function(event) {
@@ -152,16 +158,6 @@
         reader.readAsText(file);
       });
     });
-</script>
-
-<button onclick="logout()" class="btn btn-danger mt-4">Logout</button>
-
-<script>
-  function logout() {
-    sessionStorage.removeItem("loggedIn");
-    window.location.href = "login.html";
-  }
-</script>
-
+  </script>
 </body>
 </html>
