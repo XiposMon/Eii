@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>TOTO GACOR</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-image: url('Raiden eii.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      color: yellow;
+      text-align: center;
+    }
+
+    .container {
+      background-color: rgba(0, 0, 0, 0.75);
+      padding: 30px;
+      border-radius: 15px;
+      margin-top: 50px;
+    }
+
+    .lightning-title {
+      font-size: 3rem;
+      font-weight: bold;
+      animation: flash 2s infinite;
+      text-shadow: 0 0 5px #fff, 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+
+    @keyframes flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      text-align: center;
+      color: black;
+      background: white;
+    }
+
+    th { background: #eee; }
+    .text-orange { color: orange; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="lightning-title">TOTO GACOR</h1>
+    <h2 class="mt-4">Upload File POS.NET</h2>
+    <label for="fileInput" class="form-label">Upload Filenya braderku:</label>
+    <input type="file" id="fileInput" class="form-control" accept=".jncukMyID" multiple>
+    <button id="processFile" class="btn btn-warning mt-3">Proses Data</button>
+
+    <div class="table-responsive mt-4">
+      <h2 class="text-white">Hasil Rekapitulasi:</h2>
+      <table class="table mt-3">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Kasir</th>
+            <th>Total Dibayar</th>
+            <th>Total Harus Dibayar</th>
+            <th>Bayar Tunai</th>
+            <th>Non Tunai</th>
+            <th>Potong Voucher</th>
+            <th>Kembalian</th>
+            <th>Waktu</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+        <tfoot id="tableFooter"></tfoot>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const rupiah = n => "Rp " + n.toLocaleString("id-ID");
+
+    document.getElementById("fileInput").addEventListener("change", function(event) {
+      const files = event.target.files;
+      let totalJumlah = 0, totalHarus = 0, totalTunai = 0, totalNon = 0, totalVoucher = 0, totalKembalian = 0;
+      let tbody = "", idx = 1;
+
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const data = JSON.parse(e.target.result);
+            const kasir = data?.Kasir?.Nama || "-";
+            const waktu = data?.AddTimeChar || "-";
+            const totalHarusDibayar = data?.TotalHarusDibayarRp || data?.TotalHarusDibayar || 0;
+            const kembalian = data?.TotalKembalianRp || data?.Kembalian || 0;
+
+            const tunai = parseFloat(data?.TotalDibayarRpTunai) || 0;
+            const nonTunai = parseFloat(data?.TotalDibayarRpSelainTunai) || 0;
+            const voucher = parseFloat(data?.TotalDibayarRpVoucher) || 0;
+            const jumlah = tunai + nonTunai + voucher;
+
+            tbody += `
+              <tr>
+                <td>${idx++}</td>
+                <td>${kasir}</td>
+                <td>${rupiah(jumlah)}</td>
+                <td>${rupiah(totalHarusDibayar)}</td>
+                <td>${rupiah(tunai)}</td>
+                <td>${rupiah(nonTunai)}</td>
+                <td>${rupiah(voucher)}</td>
+                <td>${rupiah(kembalian)}</td>
+                <td>${waktu}</td>
+              </tr>
+            `;
+
+            totalJumlah += jumlah;
+            totalHarus += totalHarusDibayar;
+            totalTunai += tunai;
+            totalNon += nonTunai;
+            totalVoucher += voucher;
+            totalKembalian += kembalian;
+
+            document.getElementById("tableBody").innerHTML = tbody;
+            document.getElementById("tableFooter").innerHTML = `
+              <tr class="table-secondary text-orange">
+                <th colspan="2">Total Keseluruhan</th>
+                <th>${rupiah(totalJumlah)}</th>
+                <th>${rupiah(totalHarus)}</th>
+                <th>All Tunai ${rupiah(totalTunai)}</th>
+                <th>NonTunai ${rupiah(totalNon)}</th>
+                <th>Potong Voucher ${rupiah(totalVoucher)}</th>
+                <th colspan="2">${rupiah(totalKembalian)}</th>
+              </tr>
+            `;
+          } catch (err) {
+            alert("File salah format: " + file.name);
+          }
+        };
+        reader.readAsText(file);
+      });
+    });
+  </script>
+</body>
+</html>
