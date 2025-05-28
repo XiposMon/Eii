@@ -152,6 +152,16 @@
         reader.readAsText(file);
       });
     });
-  </script>
+</script>
+
+<button onclick="logout()" class="btn btn-danger mt-4">Logout</button>
+
+<script>
+  function logout() {
+    sessionStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+  }
+</script>
+
 </body>
 </html>
