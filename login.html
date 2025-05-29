@@ -1,75 +1,41 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Login dengan Transisi Video</title>
+  <title>TOTO GACOR</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: #000;
-    }
-    #login-form, #transition-video {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-    video {
-      max-width: 100%;
-      height: auto;
-    }
-  </style>
+  <title>Login ke TOTO GACOR</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-  <!-- Form Login -->
-  <div id="login-form">
-    <h2 class="text-white mb-4">Masuk ke Aplikasi</h2>
-    <input type="text" id="username" placeholder="Username" class="form-control w-50 mb-2">
-    <input type="password" id="password" placeholder="Password" class="form-control w-50 mb-3">
-    <button onclick="login()" class="btn btn-success">Login</button>
-    <div class="text-danger mt-2" id="error-msg"></div>
-  </div>
-
-  <!-- Transisi Video -->
-  <div id="transition-video" style="display:none;">
-    <video id="video-play" autoplay muted>
-      <source src="intro.mp4" type="video/mp4">
-      Browser tidak mendukung video.
-    </video>
+<body class="login-page">
+  <div class="login-box">
+    <h2>Masuk ke TOTO GACOR</h2>
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+    <div class="error" id="error-msg"></div>
   </div>
 
   <script>
-    const users = {
-      "admin": "Kazu",
-      "kasir": "1254"
-    };
-
+    // Cek login sebelum tampilkan halaman
+    if (sessionStorage.getItem("loggedIn") !== "yes") {
+      window.location.href = "login.html";
     function login() {
       const u = document.getElementById('username').value;
       const p = document.getElementById('password').value;
       const error = document.getElementById('error-msg');
 
-      if (users[u] && users[u] === p) {
+      if (u === "admin" && p === "rahasia123") {
         sessionStorage.setItem("loggedIn", "yes");
-        sessionStorage.setItem("username", u);
-
-        // Sembunyikan form, tampilkan video
-        document.getElementById("login-form").style.display = "none";
-        document.getElementById("transition-video").style.display = "flex";
-
-        // Redirect setelah video selesai
-        const vid = document.getElementById("video-play");
-        vid.onended = () => window.location.href = "index.html";
+        window.location.href = "index.html";
       } else {
         error.textContent = "Username atau password salah!";
       }
     }
   </script>
+  <style>
+    body {
+      background-image: url('
 </body>
 </html>
