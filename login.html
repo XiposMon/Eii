@@ -16,22 +16,39 @@
   </div>
 
   <script>
+    const users = {
+      "admin": "rahasia123",
+      "user1": "pass1",
+      "user2": "pass2",
+      "xipos": "gacor999"
+    };
+
     function login() {
-      const u = document.getElementById('username').value;
+      const u = document.getElementById('username').value.trim();
       const p = document.getElementById('password').value;
       const error = document.getElementById('error-msg');
 
-      if (u === "admin" && p === "rahasia123") {
+      if (users[u] && users[u] === p) {
         sessionStorage.setItem("loggedIn", "yes");
-        window.location.href = "index.html";
+        sessionStorage.setItem("username", u);
+        if (u === "admin") {
+          window.location.href = "admin.html";
+        } else {
+          window.location.href = "index.html";
+        }
       } else {
         error.textContent = "Username atau password salah!";
       }
     }
 
-    // Jika user sudah login, langsung redirect ke index.html
+    // Jika user sudah login, redirect otomatis
     if (sessionStorage.getItem("loggedIn") === "yes") {
-      window.location.href = "index.html";
+      const u = sessionStorage.getItem("username");
+      if (u === "admin") {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "index.html";
+      }
     }
   </script>
 </body>
