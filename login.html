@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <title>TOTO GACOR</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <title>Login ke TOTO GACOR</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="login-page">
   <div class="login-box">
@@ -18,24 +16,23 @@
   </div>
 
   <script>
-    // Cek login sebelum tampilkan halaman
-    if (sessionStorage.getItem("loggedIn") !== "yes") {
-      window.location.href = "login.html";
     function login() {
       const u = document.getElementById('username').value;
       const p = document.getElementById('password').value;
       const error = document.getElementById('error-msg');
 
-      if (u === "kazu" && p === "1254") {
+      if (u === "admin" && p === "rahasia123") {
         sessionStorage.setItem("loggedIn", "yes");
         window.location.href = "index.html";
       } else {
         error.textContent = "Username atau password salah!";
       }
     }
+
+    // Jika user sudah login, langsung redirect ke index.html
+    if (sessionStorage.getItem("loggedIn") === "yes") {
+      window.location.href = "index.html";
+    }
   </script>
-  <style>
-    body {
-      background-image: url('
 </body>
 </html>
