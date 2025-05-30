@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Selamat Datang</title>
+  <script>
+    if (sessionStorage.getItem("loggedIn") !== "yes") {
+      window.location.href = "login.html";
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      max-width: 800px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+  </style>
+</head>
+<body>
+  <video id="introVideo" autoplay muted>
+    <source src="intro.mp4" type="video/mp4">
+    Browser tidak mendukung video.
+  </video>
+
+  <script>
+    const video = document.getElementById("introVideo");
+    video.onended = () => {
+      window.location.href = "index.html";
+    };
+  </script>
+</body>
+</html>

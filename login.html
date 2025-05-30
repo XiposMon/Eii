@@ -17,12 +17,13 @@
 
   <script>
     const users = {
-  "admin": "rahasia123",
-  "kazu": "1254",
-  "Andita": "8954",
-  "Miyan": "2785",
-  "raiden": "eii"
-};
+      "admin": "rahasia123",
+      "kazu": "1254",
+      "Andita": "8954",
+      "Miyan": "2785",
+      "raiden": "eii"
+    };
+
     function login() {
       const u = document.getElementById('username').value.trim();
       const p = document.getElementById('password').value;
@@ -34,20 +35,20 @@
         if (u === "admin") {
           window.location.href = "admin.html";
         } else {
-          window.location.href = "index.html";
+          window.location.href = "intro.html";
         }
       } else {
         error.textContent = "Username atau password salah!";
       }
     }
 
-    // Jika user sudah login, redirect otomatis
+    // Redirect jika sudah login
     if (sessionStorage.getItem("loggedIn") === "yes") {
       const u = sessionStorage.getItem("username");
       if (u === "admin") {
         window.location.href = "admin.html";
       } else {
-        window.location.href = "index.html";
+        window.location.href = "intro.html";
       }
     }
   </script>
