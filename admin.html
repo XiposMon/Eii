@@ -10,11 +10,14 @@
       color: white;
       padding: 20px;
     }
-    .info-box {
+    .info-box, .table-box, .log-box {
       background-color: #2e2e2e;
       padding: 20px;
       border-radius: 10px;
       margin-top: 20px;
+    }
+    table {
+      color: white;
     }
   </style>
 </head>
@@ -24,6 +27,33 @@
   <div class="info-box">
     <p><strong>IP Address:</strong> <span id="ip">Memuat...</span></p>
     <p><strong>Lokasi:</strong> <span id="location">Memuat...</span></p>
+    <p><strong>Koordinat:</strong> <span id="coordinates">Memuat...</span></p>
+  </div>
+
+  <div class="table-box">
+    <h3>User Login Aktif (simulasi)</h3>
+    <table class="table table-dark table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Username</th>
+          <th>IP</th>
+          <th>Kota</th>
+          <th>Negara</th>
+          <th>Koordinat</th>
+        </tr>
+      </thead>
+      <tbody id="user-table">
+        <tr><td colspan="6">Memuat data...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="log-box">
+    <h3>Log Aktivitas User (simulasi)</h3>
+    <ul id="log-aktivitas">
+      <li>Memuat log aktivitas...</li>
+    </ul>
   </div>
 
   <script>
@@ -32,10 +62,48 @@
       .then(data => {
         document.getElementById("ip").textContent = data.ip;
         document.getElementById("location").textContent = data.city + ", " + data.region + ", " + data.country_name;
+        document.getElementById("coordinates").textContent = data.latitude + ", " + data.longitude;
+
+        const userList = [
+          {username: "admin", ip: data.ip, city: data.city, country: data.country_name, coords: data.latitude + ", " + data.longitude},
+          {username: "user1", ip: "203.0.113.11", city: "Surabaya", country: "Indonesia", coords: "-7.2575, 112.7521"},
+          {username: "user2", ip: "203.0.113.22", city: "Bandung", country: "Indonesia", coords: "-6.9175, 107.6191"}
+        ];
+
+        const tbody = document.getElementById("user-table");
+        tbody.innerHTML = "";
+        userList.forEach((user, i) => {
+          const row = `<tr>
+            <td>${i + 1}</td>
+            <td>${user.username}</td>
+            <td>${user.ip}</td>
+            <td>${user.city}</td>
+            <td>${user.country}</td>
+            <td>${user.coords}</td>
+          </tr>`;
+          tbody.innerHTML += row;
+        });
+
+        const logs = [
+          `${new Date().toLocaleString()} - admin login dari ${data.city}`,
+          `${new Date().toLocaleString()} - user1 mengakses halaman utama`,
+          `${new Date().toLocaleString()} - user2 gagal login 2x`,
+          `${new Date().toLocaleString()} - user1 logout`,
+          `${new Date().toLocaleString()} - admin melihat data koordinat`
+        ];
+
+        const logList = document.getElementById("log-aktivitas");
+        logList.innerHTML = "";
+        logs.forEach(log => {
+          const li = document.createElement("li");
+          li.textContent = log;
+          logList.appendChild(li);
+        });
       })
       .catch(() => {
         document.getElementById("ip").textContent = "Gagal memuat";
         document.getElementById("location").textContent = "Gagal memuat";
+        document.getElementById("coordinates").textContent = "Gagal memuat";
       });
   </script>
 </body>
