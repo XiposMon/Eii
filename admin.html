@@ -2,28 +2,81 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Panel</title>
+  <title>Admin Panel - Status User</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      background-color: #1e1e1e;
+      background-color: #0f0f0f;
       color: white;
       padding: 20px;
+      font-family: 'Segoe UI', sans-serif;
     }
+
+    h1, h3 {
+      color: #00ffc3;
+      text-shadow: 0 0 5px #00ffc3;
+    }
+
     .info-box, .table-box, .log-box {
-      background-color: #2e2e2e;
+      background-color: #1e1e1e;
       padding: 20px;
-      border-radius: 10px;
+      border-radius: 12px;
       margin-top: 20px;
+      box-shadow: 0 0 10px rgba(0, 255, 200, 0.2);
     }
-    table {
-      color: white;
+
+    .user-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+    }
+
+    .user-table thead tr {
+      background: #00ffc3;
+      color: #000;
+    }
+
+    .user-table tbody tr {
+      background-color: #2a2a2a;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .user-table tbody tr:hover {
+      transform: scale(1.01);
+      box-shadow: 0 0 10px #00ffc3;
+    }
+
+    .user-table td, .user-table th {
+      padding: 12px 16px;
+      vertical-align: middle;
+    }
+
+    .inactive {
+      background-color: #555 !important;
+      opacity: 0.6;
+    }
+
+    .badge-active {
+      background-color: #28a745;
+    }
+
+    .badge-inactive {
+      background-color: #6c757d;
+    }
+
+    ul#log-aktivitas li {
+      border-left: 4px solid #00ffc3;
+      padding-left: 10px;
+      margin-bottom: 8px;
     }
   </style>
 </head>
 <body>
+  <div class="d-flex justify-content-end mb-3">
+    <button onclick="toggleBackgroundImage()" class="btn btn-outline-info">Ganti Background Gambar</button>
+  </div>
   <h1>Panel Admin</h1>
-  <p>Menampilkan informasi user saat ini:</p>
+
   <div class="info-box">
     <p><strong>IP Address:</strong> <span id="ip">Memuat...</span></p>
     <p><strong>Lokasi:</strong> <span id="location">Memuat...</span></p>
@@ -31,8 +84,8 @@
   </div>
 
   <div class="table-box">
-    <h3>User Login Aktif (simulasi)</h3>
-    <table class="table table-dark table-striped">
+    <h3>User Login Aktif</h3>
+    <div class="table-responsive"><table class="user-table">
       <thead>
         <tr>
           <th>#</th>
@@ -41,12 +94,13 @@
           <th>Kota</th>
           <th>Negara</th>
           <th>Koordinat</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody id="user-table">
-        <tr><td colspan="6">Memuat data...</td></tr>
+        <tr><td colspan="7">Memuat data...</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 
   <div class="log-box">
@@ -65,31 +119,34 @@
         document.getElementById("coordinates").textContent = data.latitude + ", " + data.longitude;
 
         const userList = [
-          {username: "admin", ip: data.ip, city: data.city, country: data.country_name, coords: data.latitude + ", " + data.longitude},
-          {username: "user1", ip: "203.0.113.11", city: "Surabaya", country: "Indonesia", coords: "-7.2575, 112.7521"},
-          {username: "user2", ip: "203.0.113.22", city: "Bandung", country: "Indonesia", coords: "-6.9175, 107.6191"}
+          {username: "admin", ip: data.ip, city: data.city, country: data.country_name, coords: data.latitude + ", " + data.longitude, active: true},
+          {username: "user1", ip: "203.0.113.11", city: "Surabaya", country: "Indonesia", coords: "-7.2575, 112.7521", active: false},
+          {username: "user2", ip: "203.0.113.22", city: "Bandung", country: "Indonesia", coords: "-6.9175, 107.6191", active: true}
         ];
 
         const tbody = document.getElementById("user-table");
         tbody.innerHTML = "";
         userList.forEach((user, i) => {
-          const row = `<tr>
+          const row = document.createElement("tr");
+          if (!user.active) row.classList.add("inactive");
+
+          row.innerHTML = `
             <td>${i + 1}</td>
             <td>${user.username}</td>
             <td>${user.ip}</td>
             <td>${user.city}</td>
             <td>${user.country}</td>
             <td>${user.coords}</td>
-          </tr>`;
-          tbody.innerHTML += row;
+            <td><span class="badge ${user.active ? 'badge-active' : 'badge-inactive'}">${user.active ? 'Aktif' : 'Tidak aktif'}</span></td>
+          `;
+          tbody.appendChild(row);
         });
 
         const logs = [
           `${new Date().toLocaleString()} - admin login dari ${data.city}`,
-          `${new Date().toLocaleString()} - user1 mengakses halaman utama`,
-          `${new Date().toLocaleString()} - user2 gagal login 2x`,
-          `${new Date().toLocaleString()} - user1 logout`,
-          `${new Date().toLocaleString()} - admin melihat data koordinat`
+          `${new Date().toLocaleString()} - user1 mencoba login`,
+          `${new Date().toLocaleString()} - user2 berhasil login`,
+          `${new Date().toLocaleString()} - admin membuka halaman status`
         ];
 
         const logList = document.getElementById("log-aktivitas");
@@ -105,6 +162,23 @@
         document.getElementById("location").textContent = "Gagal memuat";
         document.getElementById("coordinates").textContent = "Gagal memuat";
       });
+  </script>
+
+  <script>
+    let usingImage = false;
+    function toggleBackgroundImage() {
+      const body = document.body;
+      if (!usingImage) {
+        body.style.backgroundImage = "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?fit=crop&w=1400&q=80')";
+        body.style.backgroundSize = "cover";
+        body.style.backgroundRepeat = "no-repeat";
+        body.style.backgroundAttachment = "fixed";
+      } else {
+        body.style.backgroundImage = "none";
+        body.style.backgroundColor = "#0f0f0f";
+      }
+      usingImage = !usingImage;
+    }
   </script>
 </body>
 </html>
