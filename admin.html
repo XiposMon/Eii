@@ -120,8 +120,8 @@
 
         const userList = [
           {username: "admin", ip: data.ip, city: data.city, country: data.country_name, coords: data.latitude + ", " + data.longitude, active: true},
-          {username: "user1", ip: "203.0.113.11", city: "Surabaya", country: "Indonesia", coords: "-7.2575, 112.7521", active: false},
-          {username: "user2", ip: "203.0.113.22", city: "Bandung", country: "Indonesia", coords: "-6.9175, 107.6191", active: true}
+          {username: "user1", ip: data.ip, city: data.city, country: data.country_name, coords: data.latitude + ", " + data.longitude, active: true},
+          {username: "user2", ip: data.ip, city: data.city, country: data.country_name, coords: data.latitude + ", " + data.longitude, active: true}
         ];
 
         const tbody = document.getElementById("user-table");
