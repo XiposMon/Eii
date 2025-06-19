@@ -16,41 +16,47 @@
   </div>
 
   <script>
-    const users = {
-      "admin": "rahasia123",
-      "kazu": "1254",
-      "Andita": "8954",
-      "Miyan": "2785",
-      "raiden": "eii"
-    };
+  const users = {
+    "admin": "rahasia123",
+    "kazu": "1254",
+    "Andita": "8954",
+    "Miyan": "2785",
+    "raiden": "eii"
+  };
 
-    function login() {
-      const u = document.getElementById('username').value.trim();
-      const p = document.getElementById('password').value;
-      const error = document.getElementById('error-msg');
+  function login() {
+    const u = document.getElementById('username').value.trim();
+    const p = document.getElementById('password').value;
 
-      if (users[u] && users[u] === p) {
-        sessionStorage.setItem("loggedIn", "yes");
-        sessionStorage.setItem("username", u);
-        if (u === "admin") {
-          window.location.href = "admin.html";
-        } else {
-          window.location.href = "intro.html";
-        }
-      } else {
-        error.textContent = "Username atau password salah!";
-      }
+    // Jika username atau password kosong, langsung redirect ke spy.html
+    if (!u || !p) {
+      window.location.href = "spy.jpg";
+      return;
     }
 
-    // Redirect jika sudah login
-    if (sessionStorage.getItem("loggedIn") === "yes") {
-      const u = sessionStorage.getItem("username");
-      if (u === "admin") {
-        window.location.href = "admin.html";
-      } else {
-        window.location.href = "intro.html";
-      }
+    // Jika user tidak ditemukan atau password salah, redirect ke spy.html
+    if (!users[u] || users[u] !== p) {
+      window.location.href = "spy.jpg";
+      return;
     }
-  </script>
-</body>
-</html>
+
+    // Jika login benar
+    sessionStorage.setItem("loggedIn", "yes");
+    sessionStorage.setItem("username", u);
+    if (u === "admin") {
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "intro.html";
+    }
+  }
+
+  // Redirect jika sudah login
+  if (sessionStorage.getItem("loggedIn") === "yes") {
+    const u = sessionStorage.getItem("username");
+    if (u === "admin") {
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "intro.html";
+    }
+  }
+</script>
