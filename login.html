@@ -30,13 +30,13 @@
 
     // Jika username atau password kosong, langsung redirect ke spy.html
     if (!u || !p) {
-      window.location.href = "spy.jpg";
+      window.location.href = "spy.html";
       return;
     }
 
     // Jika user tidak ditemukan atau password salah, redirect ke spy.html
     if (!users[u] || users[u] !== p) {
-      window.location.href = "spy.jpg";
+      window.location.href = "spy.html";
       return;
     }
 
