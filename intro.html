@@ -9,21 +9,31 @@
     }
   </script>
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
+      padding: 0;
       background: black;
+      overflow: hidden;
+    }
+    body {
+      width: 100vw;
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
     }
-
     video {
-      width: 100%;
-      height: auto;
-      max-width: 800px;
-      border-radius: 15px;
-      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 0;
+      box-shadow: none;
+      background: black;
     }
   </style>
 </head>
